@@ -1,0 +1,15 @@
+{
+  "name": "@kartik010700/common",
+  "version": "2.1.7",
+  "main": "dist/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "zod": "^4.1.5"
+  }
+}

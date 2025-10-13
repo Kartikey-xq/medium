@@ -1,0 +1,29 @@
+generator client {
+  provider   = "prisma-client-js"
+  engineType = "edge"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = "postgresql://neondb_owner:npg_H4KUtqOnE6cj@ep-late-firefly-adm4zhu2-pooler.c-2.us-east-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require"
+}
+
+model User {
+  id       String  @id @default(uuid())
+  email    String  @unique
+  name     String?
+  password String
+  posts    Post[]
+}
+
+model Post {
+  id          String  @id @default(uuid())
+  title       String
+  content     String
+  published   Boolean @default(false)
+  description String
+  authorId    String
+  authorName  String  
+  author      User    @relation(fields: [authorId], references: [id])
+  imageUrl    String?
+}
