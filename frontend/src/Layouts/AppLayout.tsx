@@ -4,14 +4,14 @@ import { SideBar } from "../components/SideBar";
 import { Header } from "../components/Header";
 
 export const AppLayout = () => {
-  const [sideBarOpen, setSideBarOpen] = useState(true);
+  const [sideBarOpen, setSideBarOpen] = useState(false);
 
   return (
     <div className="min-h-screen flex flex-col ">
       {/* Integrated Header */}
       <Header sideBarOpen={sideBarOpen} setSideBarOpen={setSideBarOpen} />
 
-      <div className="flex flex-1 h-screen ">
+      <div className="flex flex-1 h-screen overflow-hidden">
         <SideBar open={sideBarOpen} setOpen={setSideBarOpen} />
         <main className="flex-1 p-6 border-2 border-gray-200 overflow-y-auto">
           <Outlet />

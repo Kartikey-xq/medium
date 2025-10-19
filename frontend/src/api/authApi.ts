@@ -16,3 +16,15 @@
     }
   };
 
+export const signOut = async () => {
+  try {
+    const response = await axios.post(
+      `${import.meta.env.VITE_BASE_URL}/user/sign-out`,
+      {},
+      { withCredentials: true }
+    );
+    return response.data;
+  } catch (error) {
+    return { success: false, message: "Sign out failed" };
+  }
+};

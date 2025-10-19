@@ -1,3 +1,6 @@
+import { webcrypto as crypto } from 'node:crypto';
+import { TextEncoder } from 'util';
+
 export async function generateS3PresignedUrl(
   env: any,
   fileName: string,

@@ -7,6 +7,14 @@ import {  setCookie } from "hono/cookie";
 import { loginSchema, signupSchema} from "@kartik010700/common";
 import type { LoginParams, SignupParams } from "@kartik010700/common";
 import { authMiddleware } from "../middlewares/authMiddleware.js";
+
+declare const console: {
+  error(...args: any[]): void;
+  warn(...args: any[]): void;
+  log(...args: any[]): void;
+  info(...args: any[]): void;
+};
+
 const user = new Hono<Env>();
 // ---------------- SIGN-UP ----------------
 user.post("/sign-up", async (c) => {
@@ -158,4 +166,18 @@ user.get("/me", authMiddleware ,async(c)=>{
     }
 })
 
+
+user.post("/sign-out", async (c) => {
+setCookie(c, "token", "", {
+  httpOnly: true,
+  secure: true,
+  sameSite: "None",   // 👈 required for cross-origin cookies
+  expires: new Date(0), // Set the cookie to expire in the past
+});
+  c.status(200);
+  return c.json({
+    success: true,
+    message: "User logged out successfully",
+  });
+});
 export default user;

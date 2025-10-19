@@ -25,7 +25,6 @@ blog.get("/bulk", async (c)=>{
         });
     }
     catch(err: any){
-        console.log(err.message);
         c.status(404);
         return c.json({
             success:false,
@@ -111,7 +110,6 @@ blog.put("/:id" ,async (c) => {
         });
 
     } catch (error) {
-        console.error('Update blog error:', error);
         c.status(500);
         return c.json({
             success: false,

@@ -1,6 +1,8 @@
-import bcrypt from "bcryptjs";
+// ...existing code...
+import * as bcrypt from "bcryptjs";
 
 const SALT_ROUNDS = 10;
+// ...existing code...
 
 export async function hashing(password: string): Promise<string> {
   // generate salted hash

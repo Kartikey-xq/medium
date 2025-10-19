@@ -23,7 +23,7 @@ upload.post("/blog-image", async (c) => {
 
     return c.json({ uploadUrl, publicUrl });
   } catch (error) {
-    console.error("Upload error:", error);
+    // Logging omitted to avoid requiring the DOM lib for 'console' in this build
     return c.json({ error: "Upload failed" }, 500);
   }
 });

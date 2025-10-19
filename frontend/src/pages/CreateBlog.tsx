@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+/*import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import axios from "axios";
 import { createBlog } from "../api/allblogs";
@@ -120,7 +120,7 @@ export const CreateBlog = () => {
         </motion.h2>
 
         <form onSubmit={handleSubmit} className="space-y-6">
-          {/* Title */}
+          {/* Title 
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
               Title
@@ -136,7 +136,7 @@ export const CreateBlog = () => {
             />
           </div>
 
-          {/* Description */}
+          {/* Description *
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
               Description
@@ -152,7 +152,7 @@ export const CreateBlog = () => {
             />
           </div>
 
-          {/* Content */}
+          {/* Content *
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
               Content
@@ -168,7 +168,7 @@ export const CreateBlog = () => {
             />
           </div>
 
-          {/* Image Upload */}
+          {/* Image Upload *
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
               Cover Image
@@ -194,7 +194,7 @@ export const CreateBlog = () => {
             )}
           </div>
 
-          {/* Submit Button */}
+          {/* Submit Button *
           <motion.button
             whileHover={!uploading ? { scale: 1.02 } : {}}
             whileTap={!uploading ? { scale: 0.98 } : {}}
@@ -212,4 +212,18 @@ export const CreateBlog = () => {
       </motion.div>
     </div>
   );
-};
+};*/
+import { MusicTab } from "../components/editor/MusicTab";
+import { Tools } from "../components/editor/Tools";
+import { TypingArea } from "../components/editor/TypingArea";
+import { Tags } from "../components/editor/Tags";
+import { SubmitButton } from "../components/editor/SubmitButton";
+export const CreateBlog = () => {
+  return <div className="min-h-screen flex flex-col items-center">
+    <MusicTab></MusicTab>
+        <SubmitButton></SubmitButton>
+    <Tools></Tools>
+    <TypingArea></TypingArea>
+    <Tags></Tags>
+  </div>;
+}
