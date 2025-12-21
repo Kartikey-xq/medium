@@ -28,7 +28,33 @@ app.use(
     credentials: true,  // very important
   })
 )
+const allowedOrigins = [
+  'http://localhost:5173',
+  'https://medium-lyart-ten.vercel.app',
+  'https://medium-git-main-kartikeys-projects-2fe7d9d3.vercel.app'
+];
 
+
+app.use(
+  '*',
+  cors({
+    origin: (origin) => {
+      if (!origin) return ''; // no origin (like curl requests)
+      
+      // Always allow localhost for dev
+      if (origin === 'http://localhost:5173') return origin;
+
+      // Allow any Vercel preview or production deployment
+      if (origin.endsWith('.vercel.app')) return origin;
+
+      // Otherwise block
+      return '';
+    },
+    allowHeaders: ['Content-Type', 'Authorization'],
+    allowMethods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    credentials: true,
+  })
+);
 
 app.route("api/v1/user", user);
 app.route("api/v1/blog", blog);
