@@ -17,6 +17,8 @@ blog.get("/bulk", async (c)=>{
     try{
         const prisma = getPrisma(c.env.DATABASE_URL);
         const blogs = await prisma.post.findMany();
+                console.log("GET /bulk response:", JSON.stringify(blogs, null, 2));
+
         c.status(200);
         return c.json({
             success: true,
@@ -31,6 +33,7 @@ blog.get("/bulk", async (c)=>{
             message:err.message
         });
     }
+    
 })
 blog.use("/*", authMiddleware);
 

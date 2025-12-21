@@ -20,7 +20,7 @@ app.use(
   cors({
     origin: (origin) => {
       // allow dev + prod
-      const allowed = ['http://localhost:5173', 'https://yourfrontend.com']
+      const allowed = ['http://localhost:5173', 'medium-lyart-ten.vercel.app']
       return allowed.includes(origin) ? origin : ''
     },
     allowHeaders: ['Content-Type', 'Authorization'],
