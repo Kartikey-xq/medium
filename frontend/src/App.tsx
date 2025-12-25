@@ -6,6 +6,7 @@ import { AuthProvider } from './authContext'
 import { CreateBlog } from './pages/CreateBlog'
 import { Profile } from './pages/Profile'
 import { AppLayout } from './Layouts/AppLayout'
+import { ReadBlog } from './pages/ReadBlog'
 
 function App() {
   return (
@@ -16,7 +17,9 @@ function App() {
           <Route path="/signin" element={<Signin />} />
           <Route path="/" element={<AppLayout />}>
                       <Route index element={<Navigate to="blogs" replace />} />
+                      
             <Route path="blogs" element={<Blog />} />
+            <Route path="blog/:id" element={<ReadBlog />} />
             <Route path="create" element={<CreateBlog />} />
             <Route path="profile" element={<Profile />} />
           </Route>

@@ -2,18 +2,23 @@ import { useEffect, useState } from "react"
 import { getAllBlogs } from "../api/allblogs";
 import type{ blog } from "@kartik010700/common";
 import { MotivationalLoader } from "../motion/MotivationalLoader";
+import { useNavigate } from "react-router-dom";
 
 type heroProps = {
     title: string;
     authorName: string;
     description : string;
     imageUrl: string|undefined;
-
+    id: string|undefined;
+    content?: string;
 }
 
-const BlogHero = ({title, description, authorName, imageUrl} : heroProps)=>{
+const BlogHero = ({id,title, description, authorName, imageUrl,content} : heroProps)=>{
+    const navigate = useNavigate();
     return (
-        <div className="p-8 m-6 shadow-md rounded-2xl">
+        <div 
+            onClick={() => navigate(`/blog/${id}`, {state: {title, authorName, description, imageUrl, content}})}
+        className="p-8 m-6 shadow-md rounded-2xl cursor-pointer hover:shadow-xl transition-shadow duration-300">
             <header className="flex gap-2 mb-3">
                 <img src="https://picsum.photos/300/200" alt="circle" className="w-9 h-9 rounded-full"></img>
                 <h3 className ="inline">{authorName}</h3>
@@ -83,10 +88,12 @@ export const Blog = () => {
             {blogs.map((blog) => (
                 <BlogHero 
                     key={blog.id} 
+                    id={blog.id}
                     title={blog.title} 
                     authorName={blog.authorName} 
                     description={blog.description}
                     imageUrl={blog.imageUrl}
+                    content={blog.content}
                 />
             ))}
         </>
