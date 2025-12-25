@@ -7,18 +7,22 @@ export const AppLayout = () => {
   const [sideBarOpen, setSideBarOpen] = useState(false);
 
   return (
-    <div className="min-h-screen flex flex-col ">
-      {/* Integrated Header */}
+    <div className="h-screen flex flex-col overflow-hidden">
+      {/* Header (fixed height) */}
       <Header sideBarOpen={sideBarOpen} setSideBarOpen={setSideBarOpen} />
 
-      <div className="flex flex-1 h-screen overflow-hidden">
+      {/* Middle area */}
+      <div className="flex flex-1 overflow-hidden">
         <SideBar open={sideBarOpen} setOpen={setSideBarOpen} />
-        <main className="flex-1 p-6 border-2 border-gray-200 overflow-y-auto">
+
+        {/* Scroll container */}
+        <main className="flex-1 overflow-y-auto p-6 border border-gray-200">
           <Outlet />
         </main>
       </div>
 
-      <footer className="w-full bg-white border-t border-gray-200 p-6 flex justify-center items-center">
+      {/* Footer (fixed height, no scroll) */}
+      <footer className="shrink-0 bg-white border-t border-gray-200 p-6 flex justify-center items-center">
         <p className="text-sm text-gray-500">
           © 2024 Blogify. All rights reserved.
         </p>
