@@ -1,1 +1,1 @@
-{"root":["./src/index.ts","./src/prisma-helper.ts","./src/types.ts","./src/utility.ts","./src/config/s3-presign.ts","./src/middlewares/authMiddleware.ts","./src/routers/blog.ts","./src/routers/dummy.ts","./src/routers/upload.ts","./src/routers/user.ts"],"version":"5.9.3"}
+{"root":["./src/index.ts","./src/prisma-helper.ts","./src/types.ts","./src/utility.ts","./src/config/s3-presign.ts","./src/middlewares/authMiddleware.ts","./src/routers/blog.ts","./src/routers/dummy.ts","./src/routers/interactions.ts","./src/routers/upload.ts","./src/routers/user.ts"],"version":"5.9.3"}

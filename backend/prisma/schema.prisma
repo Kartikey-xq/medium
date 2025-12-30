@@ -5,7 +5,7 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = "postgresql://neondb_owner:npg_H4KUtqOnE6cj@ep-late-firefly-adm4zhu2-pooler.c-2.us-east-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require"
+  url = env("DATABASE_URL")
 }
 
 model User {
@@ -13,17 +13,61 @@ model User {
   email    String  @unique
   name     String?
   password String
-  posts    Post[]
+
+  posts         Post[]
+  givenLikes    Like[]
+  givenComments Comment[]
+  givenSaves    Save[]
 }
 
 model Post {
-  id          String  @id @default(uuid())
+  id          String   @id @default(uuid())
   title       String
   content     String
-  published   Boolean @default(false)
   description String
-  authorId    String
-  authorName  String  
-  author      User    @relation(fields: [authorId], references: [id])
+  published   Boolean  @default(false)
   imageUrl    String?
+
+  authorId   String
+  authorName String
+  author     User     @relation(fields: [authorId], references: [id])
+
+  likes    Like[]
+  comments Comment[]
+  saves    Save[]
+}
+
+model Like {
+  id        String   @id @default(uuid())
+  userId    String
+  blogId    String
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id])
+  post Post @relation(fields: [blogId], references: [id])
+
+  @@unique([userId, blogId])
+}
+
+model Comment {
+  id        String   @id @default(uuid())
+  content   String
+  userId    String
+  blogId    String
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id])
+  post Post @relation(fields: [blogId], references: [id])
+}
+
+model Save {
+  id        String   @id @default(uuid())
+  userId    String
+  blogId    String
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id])
+  post Post @relation(fields: [blogId], references: [id])
+
+  @@unique([userId, blogId])
 }

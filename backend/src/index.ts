@@ -2,6 +2,8 @@ import { Hono } from 'hono'
 import user from './routers/user.js';
 import blog from './routers/blog.js';
 import upload from './routers/upload.js';
+import interactions from './routers/interactions.js';
+
 
 import {cors} from 'hono/cors';
 
@@ -37,5 +39,6 @@ app.use(
 app.route("/api/v1/user", user);
 app.route("/api/v1/blog", blog);
 app.route("/api/v1/upload", upload);
+app.route("/api/v1/interactions", interactions);
 
 export default app
