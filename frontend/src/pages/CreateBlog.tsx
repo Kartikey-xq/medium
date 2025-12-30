@@ -1,4 +1,4 @@
-/*import { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import axios from "axios";
 import { createBlog } from "../api/allblogs";
@@ -19,19 +19,18 @@ export const CreateBlog = () => {
   const [uploading, setUploading] = useState(false);
 
   useEffect(() => {
-    const storedUser = async()=>{
-    const res = await me();
-    if(res.success===false){
-      alert("You need to log in to access this page.");
-      navigate("/signin");
-      return;
-    }else{
-      setUser(res.user);
-    }
-
+    const storedUser = async () => {
+      const res = await me();
+      if (res.success === false) {
+        alert("You need to log in to access this page.");
+        navigate("/signin");
+        return;
+      } else {
+        setUser(res.user);
+      }
+    };
     storedUser();
-}
-}, [setUser, navigate]);
+  }, [setUser, navigate]);
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -64,12 +63,9 @@ export const CreateBlog = () => {
         );
 
         const { uploadUrl, publicUrl } = presignRes.data;
-
         await axios.put(uploadUrl, formData.imageFile);
-
         imageUrl = publicUrl;
       }
-      console.log("Image uploaded to:", imageUrl);
 
       const response = await createBlog(
         formData.title,
@@ -102,91 +98,86 @@ export const CreateBlog = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 flex justify-center items-center px-4 sm:px-6 py-10">
+    <div className="min-h-screen bg-gray-50 flex justify-center items-start px-4 sm:px-6 py-10">
       <Toaster position="top-center" />
       <motion.div
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
-        className="w-full max-w-lg bg-white rounded-2xl shadow-xl p-6 sm:p-10 border border-gray-100"
+        className="w-full max-w-3xl bg-white rounded-xl shadow-md border border-gray-200"
       >
-        <motion.h2
-          initial={{ scale: 0.9 }}
-          animate={{ scale: 1 }}
-          transition={{ duration: 0.4, delay: 0.2 }}
-          className="text-3xl sm:text-4xl font-bold bg-gradient-to-r from-indigo-600 via-purple-500 to-pink-400 bg-clip-text text-transparent mb-8 text-center"
-        >
-          Create Your Blog
-        </motion.h2>
+        {/* Header */}
+        <div className="border-b border-gray-200 px-6 py-4 flex justify-between items-center">
+          <h2 className="text-xl sm:text-2xl font-semibold text-blue-800">
+            New Blog Post
+          </h2>
+          <button
+            onClick={() => navigate("/blogs")}
+            className="text-sm text-gray-500 hover:text-indigo-600 transition"
+          >
+            Back
+          </button>
+        </div>
 
-        <form onSubmit={handleSubmit} className="space-y-6">
-          {/* Title 
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Title
-            </label>
-            <input
-              type="text"
-              name="title"
-              placeholder="Enter a captivating title..."
-              value={formData.title}
-              onChange={handleChange}
-              className="w-full p-3 sm:p-4 text-sm sm:text-base border border-gray-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all shadow-sm"
-              required
-            />
-          </div>
+        {/* Form */}
+        <form onSubmit={handleSubmit} className="p-6 space-y-6">
+          {/* Title */}
+          <input
+            type="text"
+            name="title"
+            placeholder="Blog Title"
+            value={formData.title}
+            onChange={handleChange}
+            className="w-full text-lg font-semibold border-b border-gray-300 focus:border-indigo-500 outline-none py-2"
+            required
+          />
 
-          {/* Description *
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Description
-            </label>
-            <input
-              type="text"
-              name="description"
-              placeholder="A short teaser for your post..."
-              value={formData.description}
-              onChange={handleChange}
-              className="w-full p-3 sm:p-4 text-sm sm:text-base border border-gray-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all shadow-sm"
-              required
-            />
-          </div>
+          {/* Description */}
+          <input
+            type="text"
+            name="description"
+            placeholder="Short description"
+            value={formData.description}
+            onChange={handleChange}
+            className="w-full text-base border-b border-gray-300 focus:border-indigo-500 outline-none py-2"
+            required
+          />
 
-          {/* Content *
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Content
-            </label>
-            <textarea
-              name="content"
-              placeholder="Write your blog content here..."
-              value={formData.content}
-              onChange={handleChange}
-              rows={6}
-              className="w-full p-3 sm:p-4 text-sm sm:text-base border border-gray-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-transparent resize-none shadow-sm"
-              required
-            />
-          </div>
+          {/* Content */}
+          <textarea
+            name="content"
+            placeholder="Write your blog content here..."
+            value={formData.content}
+            onChange={handleChange}
+            rows={10}
+            className="w-full text-base border border-gray-300 rounded-lg focus:border-indigo-500 outline-none p-4 resize-y min-h-[200px]"
+            required
+          />
 
-          {/* Image Upload *
+          {/* Image Upload */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
               Cover Image
             </label>
-            <input
-              type="file"
-              name="imageFile"
-              accept="image/*"
-              onChange={handleChange}
-              className="w-full p-2 sm:p-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all shadow-sm"
-            />
-            {formData.imageFile && (
-              <img
-                src={URL.createObjectURL(formData.imageFile)}
-                alt="Preview"
-                className="w-full h-48 object-cover rounded-xl mt-4 shadow-md"
-              />
-            )}
+            <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
+              <label className="flex items-center justify-center w-full sm:w-48 h-32 border-2 border-dashed border-gray-300 rounded-lg cursor-pointer hover:border-indigo-500 transition">
+                <span className="text-gray-500 text-sm">Tap to upload</span>
+                <input
+                  type="file"
+                  name="imageFile"
+                  accept="image/*"
+                  onChange={handleChange}
+                  className="hidden"
+                />
+              </label>
+              {formData.imageFile && (
+                <img
+                  src={URL.createObjectURL(formData.imageFile)}
+                  alt="Preview"
+                  className="w-full sm:w-48 h-32 object-cover rounded-lg shadow-md"
+                />
+              )}
+            </div>
             {uploading && (
               <p className="text-sm text-indigo-600 mt-2 animate-pulse">
                 Uploading image…
@@ -194,16 +185,16 @@ export const CreateBlog = () => {
             )}
           </div>
 
-          {/* Submit Button *
+          {/* Submit */}
           <motion.button
             whileHover={!uploading ? { scale: 1.02 } : {}}
             whileTap={!uploading ? { scale: 0.98 } : {}}
             disabled={uploading}
             type="submit"
-            className={`w-full py-3 px-6 rounded-xl font-semibold text-lg shadow-lg transition-all duration-200 ${
+            className={`w-full py-3 px-6 rounded-lg font-semibold text-lg transition-all duration-200 ${
               uploading
                 ? "bg-gray-400 cursor-not-allowed text-white"
-                : "bg-gradient-to-r from-indigo-600 via-purple-500 to-pink-400 text-white hover:shadow-xl"
+                : "bg-indigo-600 text-white hover:bg-indigo-700"
             }`}
           >
             {uploading ? "Uploading..." : "Publish Post"}
@@ -212,18 +203,4 @@ export const CreateBlog = () => {
       </motion.div>
     </div>
   );
-};*/
-import { MusicTab } from "../components/editor/MusicTab";
-import { Tools } from "../components/editor/Tools";
-import { TypingArea } from "../components/editor/TypingArea";
-import { Tags } from "../components/editor/Tags";
-import { SubmitButton } from "../components/editor/SubmitButton";
-export const CreateBlog = () => {
-  return <div className="min-h-screen flex flex-col items-center">
-    <MusicTab></MusicTab>
-        <SubmitButton></SubmitButton>
-    <Tools></Tools>
-    <TypingArea></TypingArea>
-    <Tags></Tags>
-  </div>;
-}
+};

@@ -25,7 +25,7 @@ export const Profile = () => {
   const name = user?.name;
   const email = user?.email;
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
+    <div className="md:h-full flex items-center justify-center bg-gray-100">
       <motion.div
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}

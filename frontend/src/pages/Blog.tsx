@@ -13,26 +13,58 @@ type heroProps = {
     content?: string;
 }
 
-const BlogHero = ({id,title, description, authorName, imageUrl,content} : heroProps)=>{
-    const navigate = useNavigate();
-    return (
-        <div 
-            onClick={() => navigate(`/blog/${id}`, {state: {title, authorName, description, imageUrl, content}})}
-        className="p-8 m-6 shadow-md rounded-2xl cursor-pointer hover:shadow-xl transition-shadow duration-300">
-            <header className="flex gap-2 mb-3">
-                <img src="https://picsum.photos/300/200" alt="circle" className="w-9 h-9 rounded-full"></img>
-                <h3 className ="inline">{authorName}</h3>
-            </header>
-            <div className="flex justify-between gap-4" >
-                <div>
-            <p className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold"><strong> {title} </strong> </p>
-            <h3>{description}</h3>
-                </div>
-            <img src= {imageUrl}alt="circle" className="h-29 w-29 p-2"></img>         
-            </div>
-        </div>
-    )
-}
+
+const BlogHero = ({
+  id,
+  title,
+  description,
+  authorName,
+  imageUrl,
+  content,
+}: heroProps) => {
+  const navigate = useNavigate();
+
+  return (
+    <div
+      onClick={() =>
+        navigate(`/blog/${id}`, {
+          state: { title, authorName, description, imageUrl, content },
+        })
+      }
+      className="m-4 shadow-md rounded-2xl cursor-pointer hover:shadow-xl transition-shadow duration-300 overflow-hidden"
+    >
+      {/* Image spans top of card */}
+      <div className="w-full h-48 sm:h-64 md:h-72 lg:h-80">
+        <img
+          src={imageUrl}
+          alt={title}
+          className="w-full h-full object-cover"
+        />
+      </div>
+
+      {/* Content section */}
+      <div className="p-4 sm:p-6">
+        <header className="flex items-center gap-2 mb-3">
+          <img
+            src="https://picsum.photos/300/200"
+            alt="author avatar"
+            className="w-9 h-9 rounded-full"
+          />
+          <h3 className="text-sm sm:text-base font-medium">{authorName}</h3>
+        </header>
+
+        {/* Title & description */}
+        <p className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold leading-snug line-clamp-2">
+          {title}
+        </p>
+        <p className="mt-2 text-sm sm:text-base text-gray-600 line-clamp-3">
+          {description}
+        </p>
+      </div>
+    </div>
+  );
+};
+
 
 export const Blog = () => {
     const [blogs, setBlogs] = useState<blog[]>([]); // Ensure it's always an array
