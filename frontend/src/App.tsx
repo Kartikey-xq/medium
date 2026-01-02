@@ -7,9 +7,12 @@ import { CreateBlog } from './pages/CreateBlog'
 import { Profile } from './pages/Profile'
 import { AppLayout } from './Layouts/AppLayout'
 import { ReadBlog } from './pages/ReadBlog'
+import { Toaster } from "react-hot-toast";
 
 function App() {
   return (
+    <>
+    <Toaster position="top-right"/>
     <AuthProvider>
       <BrowserRouter>
         <Routes>
@@ -26,6 +29,7 @@ function App() {
         </Routes>
       </BrowserRouter>
     </AuthProvider>
+    </>
   );
 }
 export default App;
