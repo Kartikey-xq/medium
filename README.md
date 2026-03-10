@@ -1,3 +1,4 @@
+## You can see this project live here : https://medium-lyart-ten.vercel.app
 ## Overview
 This is a medium-styled blogging app built with a fullstack Typescript architecture.
 The application allows users to:
