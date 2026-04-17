@@ -24,7 +24,7 @@ upload.post("/blog-image", async (c) => {
     return c.json({ uploadUrl, publicUrl });
   } catch (error) {
     // Logging omitted to avoid requiring the DOM lib for 'console' in this build
-    return c.json({ error: "Upload failed" }, 500);
+    return c.json({ error }, 500);
   }
 });
 

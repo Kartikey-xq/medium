@@ -11,6 +11,11 @@ export async function generateS3PresignedUrl(
   const accessKey = env.AWS_ACCESS_KEY_ID;
   const secretKey = env.AWS_SECRET_ACCESS_KEY;
 
+  if(!bucket || !region || !accessKey || !secretKey){
+    throw new Error("Missing AWS S3 configuration in environment variables");
+  }
+
+
   // Sanitize filename
   const sanitizedFileName = fileName.replace(/\s+/g, '-').replace(/[^a-zA-Z0-9._-]/g, '');
   const key = `blogs/${Date.now()}-${sanitizedFileName}`;

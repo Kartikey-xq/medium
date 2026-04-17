@@ -17,11 +17,37 @@ const interactions = new Hono<{
 /* =======================
    PUBLIC ROUTES (NO AUTH)
 ======================= */
+/*----isLiked-----*/
+interactions.get("/isLiked/:blogId/:userId", async (c) => {
+  const blogId = c.req.param("blogId");
+  const userId = c.req.param("userId");
+  const prisma = getPrisma(c.env.DATABASE_URL);
+
+  const existing = await prisma.like.findFirst({
+    where: { blogId, userId },
+  });
+
+  return c.json({ success: true, isLiked: !!existing });
+});
+
+/*----isSaved-----*/
+interactions.get("/isSaved/:blogId/:userId", async (c) => {
+  const blogId = c.req.param("blogId");
+  const userId = c.req.param("userId");
+  const prisma = getPrisma(c.env.DATABASE_URL);
+
+  const existing = await prisma.save.findFirst({
+    where: { blogId, userId },
+  });
+
+  return c.json({ success: true, isSaved: !!existing });
+});
 
 /* ---------- LIKE COUNT ---------- */
 interactions.get("/like/:id", async (c) => {
   const blogId = c.req.param("id");
   const prisma = getPrisma(c.env.DATABASE_URL);
+
 
   const count = await prisma.like.count({
     where: { blogId },
