@@ -63,4 +63,15 @@ export type SignupApiResponse = {
 ///deploy this fix types unserstand types you blank
 
 
-
+    //zod schema for like validation:
+    const likeSchema = z.object({
+        blogId: z.string().min(1),
+        userId: z.string().min(1)
+    });
+    type LikeParams = z.infer<typeof likeSchema>;
+    //type for like api response:
+    type LikeApiResponse = {
+        success: boolean;
+        message: string;
+        likesCount: number;
+    }

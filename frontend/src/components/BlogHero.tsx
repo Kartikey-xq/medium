@@ -1,21 +1,13 @@
 type heroProps = {
-      id: string;
-    title: string;
-    authorName: string;
-    description : string;
-    imageUrl: string|undefined;
-    content?: string;
-}
+  id: string;
+  title: string;
+  authorName: string;
+  description: string;
+  imageUrl: string | undefined;
+  content?: string;
+};
 
-import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import {
-  hitLike,
-  hitSave,
-  likeCount,
-  commentCount,
-  saveCount,
-} from "../api/interactions";
 import { BlogActions } from "./BlogActions";
 
 export const BlogHero = ({
@@ -27,39 +19,6 @@ export const BlogHero = ({
   content,
 }: heroProps) => {
   const navigate = useNavigate();
-  const userId = JSON.parse(localStorage.getItem("user") || "{}")?.id ?? null;
-
-  const [likes, setLikes] = useState(0);
-  const [comments, setComments] = useState(0);
-  const [saves, setSaves] = useState(0);
-
-  const syncCounts = async () => {
-    if (!id) return;
-
-    const [l, c, s] = await Promise.all([
-      likeCount(id),
-      commentCount(id),
-      saveCount(id),
-    ]);
-
-    setLikes(l);
-    setComments(c);
-    setSaves(s);
-  };
-
-  useEffect(() => {
-    syncCounts();
-  }, [id]);
-
-  const handleLike = async () => {
-    await hitLike(userId, id);
-    await syncCounts();
-  };
-
-  const handleSave = async () => {
-    await hitSave(userId, id);
-    await syncCounts();
-  };
 
   return (
     <div
@@ -77,14 +36,7 @@ export const BlogHero = ({
         <h2 className="text-2xl font-bold mt-2">{title}</h2>
         <p className="text-gray-600 mt-2">{description}</p>
 
-        <BlogActions
-          likes={likes}
-          comments={comments}
-          isLoggedIn={userId !== null}
-          saves={saves}
-          onLike={handleLike}
-          onSave={handleSave}
-        />
+        <BlogActions blogId={id} />
       </div>
     </div>
   );

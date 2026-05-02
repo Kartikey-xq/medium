@@ -1,7 +1,41 @@
 import axios from "axios";
 
 const API_BASE = import.meta.env.VITE_BASE_URL;
+/*---------isLiked--------------*/
+export const isLiked = async (userId: string | null, blogId: string | null) => {
+  if (!userId) throw new Error("User not authenticated");
+  if (!blogId) throw new Error("Blog ID missing");
 
+  try {
+    const res = await axios.get(
+      `${API_BASE}/interactions/isLiked/${blogId}/${userId}`,
+      {
+        withCredentials: true,
+      }
+    );
+    return res.data.isLiked;
+  } catch {
+    throw new Error("Failed to fetch like status");
+  }
+};
+
+/*---------isSaved--------------*/
+export const isSaved = async (userId: string | null, blogId: string | null) => {
+  if (!userId) throw new Error("User not authenticated");
+  if (!blogId) throw new Error("Blog ID missing");
+
+  try {
+    const res = await axios.get(
+      `${API_BASE}/interactions/isSaved/${blogId}/${userId}`,
+      {
+        withCredentials: true,
+      }
+    );
+    return res.data.isSaved;
+  } catch {
+    throw new Error("Failed to fetch save status");
+  }
+};
 /* ---------- LIKE ---------- */
 export const hitLike = async (userId: string | null, blogId: string | null) => {
   if (!userId) throw new Error("User not authenticated");
@@ -10,11 +44,12 @@ export const hitLike = async (userId: string | null, blogId: string | null) => {
   try {
     return await axios.post(
       `${API_BASE}/interactions/like`,
-      { userId, blogId },
+      { blogId },
       { withCredentials: true }
     );
-  } catch (err: any) {
-    throw new Error(err?.response?.data?.message || "Failed to like blog");
+  } catch (err: unknown) {
+    const error = err as { response?: { data?: { message?: string } } };
+    throw new Error(error?.response?.data?.message || "Failed to like blog");
   }
 };
 
@@ -40,7 +75,7 @@ export const hitSave = async (userId: string | null, blogId: string | null) => {
   try {
     return await axios.post(
       `${API_BASE}/interactions/save`,
-      { userId, blogId },
+      { blogId },
       { withCredentials: true }
     );
   } catch {
@@ -75,7 +110,7 @@ export const hitComment = async (
   try {
     return await axios.post(
       `${API_BASE}/interactions/comment`,
-      { userId, blogId, content },
+      { blogId, content },
       { withCredentials: true }
     );
   } catch {

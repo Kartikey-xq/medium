@@ -4,7 +4,7 @@ import axios from "axios";
 import { createBlog } from "../api/allblogs";
 import { useAuth } from "../authContext";
 import { useNavigate } from "react-router-dom";
-import toast, { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
 import { me } from "../api/authApi";
 
 export const CreateBlog = () => {
@@ -59,7 +59,7 @@ export const CreateBlog = () => {
             fileName: formData.imageFile.name,
             fileType: formData.imageFile.type,
           },
-          { withCredentials: true }
+           { headers: { "Content-Type": "application/json" }, withCredentials: true }
         );
 
         const { uploadUrl, publicUrl } = presignRes.data;
@@ -99,7 +99,6 @@ export const CreateBlog = () => {
 
   return (
     <div className="min-h-screen bg-gray-50 flex justify-center items-start px-4 sm:px-6 py-10">
-      <Toaster position="top-center" />
       <motion.div
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}

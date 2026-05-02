@@ -57,6 +57,7 @@ user.post("/sign-up", async (c) => {
     });
 
     const payload = {
+      iat: Math.floor(Date.now() / 1000), // Issued at time
       id: newUser.id,
       exp: Math.floor(Date.now() / 1000) + 60 * 15,
     };
@@ -112,6 +113,7 @@ const isValid = await compareHash(data.password, user.password);
     }
 
   const payload = {
+    iat: Math.floor(Date.now() / 1000),
     id: user.id,
     exp: Math.floor(Date.now() / 1000) + 60 * 15,
   };

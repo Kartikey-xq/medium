@@ -1,38 +1,47 @@
+// authMiddleware.ts
 import { Context, Next } from "hono";
 import { getCookie } from "hono/cookie";
 import { verify } from "hono/jwt";
+import { getPrisma } from "../prisma-helper.js"; // Add this import
 
 type JWTPayload = {
   id: string;
   exp: number;
+  iat?: number; // Add issued-at for rotation checks
 };
 
-// 👇 Make sure to export it so you can reuse it in routes
 export const authMiddleware = async (
   c: Context<{
-    Bindings: { JWT_SECRET: string }; // from env
-    Variables: { userId: string };    // for c.set/get
+    Bindings: { JWT_SECRET: string; DATABASE_URL: string };
+    Variables: { userId: string };
   }>,
   next: Next
 ) => {
   const jwt = getCookie(c, "token");
 
   if (!jwt) {
-    // ✅ Now `c.json` and `c.status` will autocomplete & typecheck
-    return c.json({ success: false, message: "token not found" }, 404);
+    return c.json({ success: false, message: "Authentication required" }, 401);
   }
 
   try {
-    const result = await verify(jwt, c.env.JWT_SECRET) as JWTPayload;
-    if (!result || !result.id) {
-      return c.json({ success: false, message: "unauthenticated user" }, 401);
+    const payload = await verify(jwt, c.env.JWT_SECRET) as JWTPayload;
+    
+    // Check expiration explicitly
+    if (payload.exp < Math.floor(Date.now() / 1000)) {
+      return c.json({ success: false, message: "Token expired" }, 401);
     }
 
-    // ✅ `c.set` works because Variables is defined above
-    c.set("userId", result.id);
+    // Validate user exists in DB (prevents stale tokens)
+    const prisma = getPrisma(c.env.DATABASE_URL);
+    const user = await prisma.user.findUnique({ where: { id: payload.id } });
+    if (!user) {
+      return c.json({ success: false, message: "User not found" }, 401);
+    }
+
+    c.set("userId", payload.id);
     await next();
   } catch (err) {
-    console.error("JWT verification error:", err);
-    return c.json({ success: false, message: "invalid token" }, 401);
+    console.error("Auth middleware error:", err);
+    return c.json({ success: false, message: "Invalid authentication" }, 401);
   }
 };

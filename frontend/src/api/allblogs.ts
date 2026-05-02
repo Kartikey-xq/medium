@@ -16,7 +16,7 @@ export const createBlog = async (title: string, content: string, description: st
         const response = await axios.post(
             `${import.meta.env.VITE_BASE_URL}/blog/create`,
             { title, content, description,imageUrl },
-            { withCredentials: true }
+            {headers: { "Content-Type": "application/json" }, withCredentials: true }
         );
         return response.data;
 }

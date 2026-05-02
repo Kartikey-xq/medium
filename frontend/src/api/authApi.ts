@@ -24,7 +24,7 @@ export const signOut = async () => {
       { withCredentials: true }
     );
     return response.data;
-  } catch (error) {
+  } catch {
     return { success: false, message: "Sign out failed" };
   }
 };

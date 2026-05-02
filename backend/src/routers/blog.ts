@@ -35,8 +35,8 @@ blog.get("/bulk", async (c)=>{
     }
     
 })
-blog.use("/*", authMiddleware);
 
+// Allow unauthenticated users to read individual blogs
 blog.get("/:id" ,async(c)=>{
     const blog_id =c.req.param('id');
     const Prisma = getPrisma(c.env.DATABASE_URL);
@@ -52,6 +52,9 @@ blog.get("/:id" ,async(c)=>{
     c.status(200);
     return c.json({success: true, message: `blog found`, blog});
 });
+
+// Protect all mutation routes below (create, update, delete)
+blog.use("/*", authMiddleware);
 
 blog.put("/:id" ,async (c) => {
     try {
