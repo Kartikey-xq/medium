@@ -1,9 +1,9 @@
 import axios from "axios";
 
-export const getAllBlogs = async()=>{
+export const getAllBlogs = async(page = 1, limit = 5)=>{
     try{
         const response = await axios.get(
-            `${import.meta.env.VITE_BASE_URL}/blog/bulk`,
+            `${import.meta.env.VITE_BASE_URL}/blog/bulk?page=${page}&limit=${limit}`,
             {withCredentials:true}
         );
         return response.data;
@@ -13,9 +13,14 @@ export const getAllBlogs = async()=>{
     }
 };
 export const createBlog = async (title: string, content: string, description: string, imageUrl :string ) => {
+        const payload: Record<string, unknown> = { title, content, description };
+        if (imageUrl) {
+            payload.imageUrl = imageUrl;
+        }
+
         const response = await axios.post(
             `${import.meta.env.VITE_BASE_URL}/blog/create`,
-            { title, content, description,imageUrl },
+            payload,
             {headers: { "Content-Type": "application/json" }, withCredentials: true }
         );
         return response.data;
