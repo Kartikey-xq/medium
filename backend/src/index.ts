@@ -21,7 +21,7 @@ app.use(
   cors({
     origin: (origin: string | undefined) => {
       if (!origin) return null; // no origin (like curl requests) omit the header, no browser in the picture, so no CORS implications
-      const allowed = origin === 'http://localhost:5173' || origin.endsWith('.vercel.app');
+      const allowed = origin === 'http://localhost:5173' || origin === 'http://localhost:5174' || origin.endsWith('.vercel.app');
       // Always allow localhost for dev
       // Allow any Vercel preview or production deployment
       if (allowed) return origin;

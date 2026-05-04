@@ -1,4 +1,5 @@
 import {Hono} from "hono";
+import { z } from "zod";
 import { authMiddleware } from "../middlewares/authMiddleware.js";
 import { getPrisma } from "../prisma-helper.js"; 
 import { BlogPostParams, blogPostSchema, UpdateBlogParams, updateBlogSchema } from "@kartik010700/common";
@@ -159,7 +160,11 @@ blog.post("/create", async (c) => {
   const body: BlogPostParams = await c.req.json();
   const prisma = getPrisma(c.env.DATABASE_URL);
 
-  const validatedBody = blogPostSchema.safeParse(body);
+  const createBlogSchema = blogPostSchema.extend({
+    imageUrl: z.string().url().optional(),
+  });
+
+  const validatedBody = createBlogSchema.safeParse(body);
 
   if (!validatedBody.success) {
     c.status(400);
