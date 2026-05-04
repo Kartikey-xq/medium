@@ -17,14 +17,22 @@ const blog = new Hono<{
 blog.get("/bulk", async (c)=>{
     try{
         const prisma = getPrisma(c.env.DATABASE_URL);
-        const blogs = await prisma.post.findMany();
-                console.log("GET /bulk response:", JSON.stringify(blogs, null, 2));
+        const page = parseInt(c.req.query('page') || '1', 10);
+        const limit = parseInt(c.req.query('limit') || '5', 10);
+        const skip = (page - 1) * limit;
+
+        const [blogs, total] = await Promise.all([
+            prisma.post.findMany({ skip, take: limit }),
+            prisma.post.count()
+        ]);
 
         c.status(200);
         return c.json({
             success: true,
-            message:"getting all blogs!",
-            blog: blogs
+            message: "getting all blogs!",
+            blog: blogs,
+            totalPages: Math.ceil(total / limit),
+            currentPage: page
         });
     }
     catch(err: any){
