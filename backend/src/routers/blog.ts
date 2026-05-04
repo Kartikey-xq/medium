@@ -45,6 +45,43 @@ blog.get("/bulk", async (c)=>{
     
 })
 
+blog.get("/my-blogs", authMiddleware, async (c) => {
+    try {
+        const prisma = getPrisma(c.env.DATABASE_URL);
+        const page = parseInt(c.req.query('page') || '1', 10);
+        const limit = parseInt(c.req.query('limit') || '5', 10);
+        const skip = (page - 1) * limit;
+        const userId = c.get('userId');
+
+        const [blogs, total] = await Promise.all([
+            prisma.post.findMany({ 
+                where: { authorId: userId },
+                skip, 
+                take: limit 
+            }),
+            prisma.post.count({
+                where: { authorId: userId }
+            })
+        ]);
+
+        c.status(200);
+        return c.json({
+            success: true,
+            message: "getting user blogs",
+            blog: blogs,
+            totalPages: Math.ceil(total / limit),
+            currentPage: page
+        });
+    }
+    catch(err: any){
+        c.status(500);
+        return c.json({
+            success: false,
+            message: err.message
+        });
+    }
+});
+
 // Allow unauthenticated users to read individual blogs
 blog.get("/:id" ,async(c)=>{
     const blog_id =c.req.param('id');
