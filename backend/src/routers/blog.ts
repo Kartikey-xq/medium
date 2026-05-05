@@ -86,17 +86,21 @@ blog.get("/my-blogs", authMiddleware, async (c) => {
 blog.get("/:id" ,async(c)=>{
     const blog_id =c.req.param('id');
     const Prisma = getPrisma(c.env.DATABASE_URL);
-    const blog = await Prisma.post.findUnique({
-        where: {
-            id: blog_id
-        }
-    })
-    if(!blog){
+    try {
+        const blog = await Prisma.post.update({
+            where: {
+                id: blog_id
+            },
+            data: {
+                viewCount: { increment: 1 }
+            }
+        })
+        c.status(200);
+        return c.json({success: true, message: `blog found`, blog});
+    } catch (e) {
         c.status(404);
         return c.json({success:false, message:"not found"});
     }
-    c.status(200);
-    return c.json({success: true, message: `blog found`, blog});
 });
 
 // Protect all mutation routes below (create, update, delete)

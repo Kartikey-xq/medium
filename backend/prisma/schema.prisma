@@ -13,6 +13,7 @@ model User {
   email    String  @unique
   name     String?
   password String
+  verified Boolean @default(false)
 
   posts         Post[]
   givenLikes    Like[]
@@ -27,14 +28,17 @@ model Post {
   description String
   published   Boolean  @default(false)
   imageUrl    String?
+  viewCount   Int      @default(0)
 
   authorId   String
   authorName String
   author     User     @relation(fields: [authorId], references: [id])
 
-  likes    Like[]
-  comments Comment[]
-  saves    Save[]
+  likes      Like[]
+  comments   Comment[]
+  saves      Save[]
+  genres     Genre[]
+  characters Character[]
 }
 
 model Like {
@@ -70,4 +74,19 @@ model Save {
   post Post @relation(fields: [blogId], references: [id])
 
   @@unique([userId, blogId])
+}
+
+model Genre {
+  id    String @id @default(uuid())
+  name  String @unique
+  posts Post[]
+}
+
+model Character {
+  id     String  @id @default(uuid())
+  name   String
+  status String?
+  bio    String?
+  postId String
+  post   Post    @relation(fields: [postId], references: [id], onDelete: Cascade)
 }
