@@ -1,8 +1,10 @@
-# Blogify — Medium-style blogging app
+# Content crib: a community for content creators
 
 Live: https://medium-lyart-ten.vercel.app
 
 ---
+
+
 
 ## Architecture Overview
 
