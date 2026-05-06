@@ -18,10 +18,11 @@ export type LoginParams = z.infer<typeof loginSchema>;
 
 export const blogPostSchema = z.object({
   title: z.string(),
-  content: z.string(),
+  content: z.string(), // This will now hold TipTap JSON string
   description : z.string(),
-  imageUrl: z.string().url(),
-});//create seperate type dont infer from blogpostschema 
+  imageUrl: z.string().url().optional(),
+  genreIds: z.array(z.string()).min(1, "At least one genre is required"),
+});
 
 export type BlogPostParams = z.infer<typeof blogPostSchema>;
 
@@ -36,16 +37,33 @@ export const updateBlogSchema = z
 export type UpdateBlogParams = z.infer<typeof updateBlogSchema>;
 
 //create type for api response objects:-
-//1 blog:- 
+//1 Genre & Character sub-types
+export type Genre = {
+  id: string;
+  name: string;
+};
+
+export type Character = {
+  id: string;
+  name: string;
+  status: string | null;
+  bio: string | null;
+  postId: string;
+};
+
+//2 blog:- 
 export type blog = {
   id: string;
-  title:string;
-  content:string;
-  published:boolean;
-  authorId:string;
+  title: string;
+  content: string; // TipTap JSON format
+  published: boolean;
+  authorId: string;
   authorName: string;
   description: string;
-  imageUrl: string;
+  imageUrl: string | null;
+  viewCount: number;
+  genres?: Genre[];
+  characters?: Character[];
 };
 //2 user:-
 export type user = {
@@ -57,10 +75,37 @@ export type user = {
 //generic api response 
 export type SignupApiResponse = {
   success: boolean;
-  message:string;
+  message: string;
   user: user;
-}
-///deploy this fix types unserstand types you blank
+};
+
+export type SingleBlogApiResponse = {
+  success: boolean;
+  message: string;
+  blog: blog;
+};
+
+export type BulkBlogApiResponse = {
+  success: boolean;
+  message: string;
+  blog: blog[];
+  totalPages: number;
+  currentPage: number;
+};
+
+export type AnalyticsApiResponse = {
+  success: boolean;
+  stats: {
+    totalViews: number;
+    totalReads: number;
+    totalLikes: number;
+    totalSaves: number;
+    totalComments: number;
+  };
+  recentPosts: (Omit<blog, 'content' | 'description'> & { 
+    _count: { reads: number; likes: number; saves: number; comments: number } 
+  })[];
+};
 
 
     //zod schema for like validation:

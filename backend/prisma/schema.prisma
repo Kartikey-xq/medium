@@ -19,6 +19,7 @@ model User {
   givenLikes    Like[]
   givenComments Comment[]
   givenSaves    Save[]
+  givenReads    Read[]
 }
 
 model Post {
@@ -37,6 +38,7 @@ model Post {
   likes      Like[]
   comments   Comment[]
   saves      Save[]
+  reads      Read[]
   genres     Genre[]
   characters Character[]
 }
@@ -89,4 +91,16 @@ model Character {
   bio    String?
   postId String
   post   Post    @relation(fields: [postId], references: [id], onDelete: Cascade)
+}
+
+model Read {
+  id        String   @id @default(uuid())
+  userId    String
+  blogId    String
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  post Post @relation(fields: [blogId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, blogId])
 }
