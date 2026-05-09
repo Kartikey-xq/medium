@@ -21,7 +21,7 @@ export const blogPostSchema = z.object({
   content: z.string(), // This will now hold TipTap JSON string
   description : z.string(),
   imageUrl: z.string().url().optional(),
-  genreIds: z.array(z.string()).min(1, "At least one genre is required"),
+  genreIds: z.array(z.string()).optional(),
 });
 
 export type BlogPostParams = z.infer<typeof blogPostSchema>;
